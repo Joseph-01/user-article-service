@@ -1,0 +1,24 @@
+{
+  "name": "blogapi_v3",
+  "version": "1.0.0",
+  "description": "blog API version 3, created with nodejs, express, mongodb",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joseph-01/blogApi_v3.git"
+  },
+  "author": "Joseph Isibor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Joseph-01/blogApi_v3/issues"
+  },
+  "homepage": "https://github.com/Joseph-01/blogApi_v3#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "jest": "^28.1.1",
+    "mongoose": "^6.3.6"
+  }
+}
