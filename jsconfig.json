@@ -1,0 +1,6 @@
+//to let vscode do intellisense for jset
+{
+    "typeAcquisition": {
+        "include": ["jest"]
+    }
+}
