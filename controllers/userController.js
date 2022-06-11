@@ -52,14 +52,19 @@ const getUserBySlug = async (req, res) => {
 //update a user
 const updateUser = async (req, res) => {
     try {
-        const user = await User.findOneAndUpdate({slug: req.params.slug}, req.body)
+        const {password, ...others} = req.body
+        const user = await User.findOneAndUpdate({slug: req.params.slug}, others)
         res.status(200).json("update success")
     } catch (error) {
         return res.status(500).json({ "errMsg": error })
     }
 }
+//password update
 
 //follow a user
+const followUser = async(req, res) => {
+    
+} 
 //unfollow a user
 
 
