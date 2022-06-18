@@ -4,7 +4,7 @@
   "description": "blog API version 3, created with nodejs, express, mongodb",
   "main": "server.js",
   "scripts": {
-    "test": "jest ",
+    "test": "jest --watchAll",
     "start": "nodemon server.js"
   },
   "repository": {
@@ -22,10 +22,13 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "helmet": "^5.1.0",
-    "jest": "^28.1.1",
     "mongoose": "^6.3.6",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.16",
     "slugify": "^1.6.5"
+  },
+  "devDependencies": {
+    "jest": "^28.1.1",
+    "supertest": "^6.2.3"
   }
 }

@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
     phoneNumber: {
         type: String
     },
-    folowers:{
+    followers:{
         type: Array,
         default: []
     },
