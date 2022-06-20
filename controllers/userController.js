@@ -1,6 +1,5 @@
 const User = require("../models/user")
 const bcrypt = require("bcrypt")
-const res = require("express/lib/response")
 const { findById, find, findOne } = require("../models/user")
 
 //get all user, only for super admins
@@ -53,6 +52,13 @@ const getUserBySlug = async (req, res) => {
 //update a user
 const updateUser = async (req, res) => {
     try {
+        const slug = req.params.slug
+        //check if user esxist
+        const slugToCheck = await User.findOne({slug: slug})
+        if(!slugToCheck) {
+            return res.status(404).json({ "errMsg": "not found" })
+        }
+        //get body to update
         const { password, ...others } = req.body
         const user = await User.findOneAndUpdate({ slug: req.params.slug }, others)
         res.status(200).json("update success")
@@ -66,12 +72,15 @@ const updateUser = async (req, res) => {
 const followUser = async (req, res) => {
     try {
         if (req.params.id != req.body.userId) {
-            const userToFollow = await find({id: req.params.id})
-            // const userFollowing = await findById(req.body.userId)
-            res.json(userToFollow)
-            // if(userToFollow.followers.includes(req.body.userId)) {
-            //     res.send("work")
-            // }
+            const userToFollow = await User.findById(req.params.id)
+            const userFollowing = await User.findById(req.body.userId)
+            if (!userToFollow.followers.includes(req.body.userId) && !userFollowing.followings.includes(req.params.id)) {
+                await userToFollow.updateOne({ $push: { followers: req.body.userId } })
+                await userFollowing.updateOne({ $push: { followings: req.params.id } })
+                return res.status(200).json("You have followed this user")
+            } else {
+                return res.status(403).json({ "errMsg": "You already follow this user" })
+            }
         } else {
             return res.status(403).json({ "errMsg": "You are can not follow yourself" })
 
@@ -80,7 +89,29 @@ const followUser = async (req, res) => {
         return res.status(500).json({ "errMsg": error })
     }
 }
+
+
 //unfollow a user
+const unFollowUser = async (req, res) => {
+    try {
+        if (req.params.id != req.body.userId) {
+            const userToFollow = await User.findById(req.params.id)
+            const userFollowing = await User.findById(req.body.userId)
+            if (userToFollow.followers.includes(req.body.userId) && userFollowing.followings.includes(req.params.id)) {
+                await userToFollow.updateOne({ $pull: { followers: req.body.userId } })
+                await userFollowing.updateOne({ $pull: { followings: req.params.id } })
+                return res.status(200).json("You have unfollowed this user")
+            } else {
+                return res.status(403).json({ "errMsg": "You do follow this user" })
+            }
+        } else {
+            return res.status(403).json({ "errMsg": "You are can not unfollow yourself" })
+
+        }
+    } catch (error) {
+        return res.status(500).json({ "errMsg": error })
+    }
+}
 
 
 module.exports = {
@@ -88,5 +119,6 @@ module.exports = {
     getAllUser,
     getUserBySlug,
     updateUser,
-    followUser
+    followUser,
+    unFollowUser
 }
