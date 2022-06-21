@@ -9,6 +9,6 @@ const router = require("express").Router();
 
 router.route("/").post(createPost);
 router.route("/:id").get(getPostById).put(updatePost)
-router.route("/:id/like").put(likePost)
+router.route("/:id/like").patch(likePost)
 
 module.exports = router;

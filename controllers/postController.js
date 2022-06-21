@@ -37,8 +37,7 @@ const updatePost = async (req, res) => {
         if (!postToUpdate) {
             return res.status(404).json({ "errMsg": "post not found" })
         }
-        //removed userId and likes from the request body, 
-        //so as not to accidentally updatethem
+        //removed userId and likes from the request body, so as not to accidentally update them
         const { userId, likes, ...others } = req.body
         const updatedPost = await Post.findOneAndUpdate({ id: id }, others)
         res.status(200).json("update success")
@@ -53,22 +52,26 @@ const updatePost = async (req, res) => {
 //like a post
 const likePost = async (req, res) => {
     try {
-            const checkPost = await Post.findById(req.params.id)
-            // const checkUser = await User.findById(req.body.userId)
-            // res.json({checkUser})
-            if (!checkPost.likes.includes(req.body.userId)) {
-                await Post.updateOne({ $push: { likes: req.body.userId } })
-                return res.status(200).json("You have liked this post")
-            } else {
-                return res.status(200).json("You do liked this post")
-            }
+        const checkPost = await Post.findById(req.params.id)
+        const checkUser = await User.findById(req.body.userId)
+        if (!checkUser) {
+            return res.status(404).json("user not found")
+        }
+        if (!checkPost) {
+            return res.status(404).json("post not found")
+        }
+        if (!checkPost.likes.includes(req.body.userId)) {
+            await checkPost.updateOne({ $push: { likes: req.body.userId } })
+            return res.status(200).json("You have liked this post")
+        } else {
+            await checkPost.updateOne({ $pull: { likes: req.body.userId } })
+            return res.status(200).json("You have unliked this post")
+        }
     } catch (error) {
         return res.status(500).json({ "errMsg": error })
     }
 
 }
-
-//unlike a post
 
 
 module.exports = {
