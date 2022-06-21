@@ -1,4 +1,5 @@
 const User = require("../models/user")
+const Post = require("../models/post")
 const bcrypt = require("bcrypt")
 const { findById, find, findOne } = require("../models/user")
 
@@ -34,13 +35,13 @@ const createUser = async (req, res) => {
         })
 
         const user = await newUser.save()
-        return res.status(200).json({ user })
+        return res.status(201).json({ user })
     } catch (error) {
         return res.status(500).json({ "errMsg": error })
     }
 }
 
-//get a user by id
+//get a user by slug
 const getUserBySlug = async (req, res) => {
     try {
         const user = await User.findOne({ slug: req.params.slug })
@@ -66,7 +67,7 @@ const updateUser = async (req, res) => {
         return res.status(500).json({ "errMsg": error })
     }
 }
-//password update
+
 
 //follow a user
 const followUser = async (req, res) => {
@@ -102,7 +103,7 @@ const unFollowUser = async (req, res) => {
                 await userFollowing.updateOne({ $pull: { followings: req.params.id } })
                 return res.status(200).json("You have unfollowed this user")
             } else {
-                return res.status(403).json({ "errMsg": "You do follow this user" })
+                return res.status(403).json({ "errMsg": "You do not follow this user" })
             }
         } else {
             return res.status(403).json({ "errMsg": "You are can not unfollow yourself" })
@@ -114,11 +115,32 @@ const unFollowUser = async (req, res) => {
 }
 
 
+//get post by a particular user
+const getPostByUser = async (req, res) => {
+    try {
+        const slugToCheck = req.params.slug
+        const user = await User.findOne({ slug: slugToCheck })
+        if (!user) {
+            return res.status(404).json({ "errMsg": "user not found" })
+        }
+        //get post by user slug
+        const post = await Post.find({userId: user._id})
+        res.status(200).json({ post })
+    } catch (error) {
+        return res.status(500).json({ "errMsg": error })
+    }
+}
+
+//password update
+//delete a user
+
+
 module.exports = {
     createUser,
     getAllUser,
     getUserBySlug,
     updateUser,
     followUser,
-    unFollowUser
+    unFollowUser,
+    getPostByUser
 }
