@@ -41,10 +41,10 @@ const createUser = async (req, res) => {
     }
 }
 
-//get a user by slug
-const getUserBySlug = async (req, res) => {
+//get a user by id
+const getUserById = async (req, res) => {
     try {
-        const user = await User.findOne({ slug: req.params.slug })
+        const user = await User.findOne({ _id: req.params.id })
         res.status(200).json({ user })
     } catch (error) {
         return res.status(500).json({ "errMsg": error })
@@ -53,15 +53,15 @@ const getUserBySlug = async (req, res) => {
 //update a user
 const updateUser = async (req, res) => {
     try {
-        const slug = req.params.slug
+        const id = req.params.id
         //check if user esxist
-        const slugToCheck = await User.findOne({slug: slug})
-        if(!slugToCheck) {
+        const userToCheck = await User.findOne({_id: id})
+        if(!userToCheck) {
             return res.status(404).json({ "errMsg": "not found" })
         }
         //get body to update
         const { password, ...others } = req.body
-        const user = await User.findOneAndUpdate({ slug: req.params.slug }, others)
+        const user = await User.findOneAndUpdate({ _id: req.params.id }, others)
         res.status(200).json("update success")
     } catch (error) {
         return res.status(500).json({ "errMsg": error })
@@ -69,7 +69,7 @@ const updateUser = async (req, res) => {
 }
 
 
-//follow a user
+//follow and unfollow a user 
 const followUser = async (req, res) => {
     try {
         if (req.params.id != req.body.userId) {
@@ -80,7 +80,9 @@ const followUser = async (req, res) => {
                 await userFollowing.updateOne({ $push: { followings: req.params.id } })
                 return res.status(200).json("You have followed this user")
             } else {
-                return res.status(403).json({ "errMsg": "You already follow this user" })
+                await userToFollow.updateOne({ $pull: { followers: req.body.userId } })
+                await userFollowing.updateOne({ $pull: { followings: req.params.id } })
+                return res.status(200).json("You have unfollowed this user")
             }
         } else {
             return res.status(403).json({ "errMsg": "You are can not follow yourself" })
@@ -92,27 +94,6 @@ const followUser = async (req, res) => {
 }
 
 
-//unfollow a user
-const unFollowUser = async (req, res) => {
-    try {
-        if (req.params.id != req.body.userId) {
-            const userToFollow = await User.findById(req.params.id)
-            const userFollowing = await User.findById(req.body.userId)
-            if (userToFollow.followers.includes(req.body.userId) && userFollowing.followings.includes(req.params.id)) {
-                await userToFollow.updateOne({ $pull: { followers: req.body.userId } })
-                await userFollowing.updateOne({ $pull: { followings: req.params.id } })
-                return res.status(200).json("You have unfollowed this user")
-            } else {
-                return res.status(403).json({ "errMsg": "You do not follow this user" })
-            }
-        } else {
-            return res.status(403).json({ "errMsg": "You are can not unfollow yourself" })
-
-        }
-    } catch (error) {
-        return res.status(500).json({ "errMsg": error })
-    }
-}
 
 
 //get post by a particular user
@@ -133,14 +114,16 @@ const getPostByUser = async (req, res) => {
 
 //password update
 //delete a user
+const deleteUser = async (req, res) => {
+
+}
 
 
 module.exports = {
     createUser,
     getAllUser,
-    getUserBySlug,
+    getUserById,
     updateUser,
     followUser,
-    unFollowUser,
     getPostByUser
 }
