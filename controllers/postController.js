@@ -48,6 +48,18 @@ const updatePost = async (req, res) => {
 }
 
 //delete a post
+const deletePost = async (req, res) => {
+    try {
+        const postToCheck = await Post.findById(req.params.id)
+        if(!postToCheck) {
+            return res.status(404).json({ "errMsg": "post not found" })
+        }
+        await Post.findByIdAndDelete(req.params.id)
+        return res.status(200).json("This post has been deleted")
+    } catch (error) {
+        return res.status(500).json({ "errMsg": error })
+    }
+}
 
 //like a post
 const likePost = async (req, res) => {
@@ -79,4 +91,5 @@ module.exports = {
     getPostById,
     updatePost,
     likePost,
+    deletePost,
 }

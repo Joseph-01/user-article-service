@@ -104,7 +104,7 @@ const getPostByUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ "errMsg": "user not found" })
         }
-        //get post by user slug
+        //get post by user id
         const post = await Post.find({userId: user._id})
         res.status(200).json({ post })
     } catch (error) {
@@ -115,7 +115,16 @@ const getPostByUser = async (req, res) => {
 //password update
 //delete a user
 const deleteUser = async (req, res) => {
-
+    try {
+        const userToCheck = await User.findById(req.params.id)
+        if(!userToCheck) {
+            return res.status(404).json({ "errMsg": "user not found" })
+        }
+        await User.findByIdAndDelete(req.params.id)
+        return res.status(200).json("This user has been deleted")
+    } catch (error) {
+        return res.status(500).json({ "errMsg": error })
+    }
 }
 
 
@@ -124,6 +133,7 @@ module.exports = {
     getAllUser,
     getUserById,
     updateUser,
+    deleteUser,
     followUser,
     getPostByUser
 }
