@@ -99,14 +99,16 @@ const followUser = async (req, res) => {
 //get post by a particular user
 const getPostByUser = async (req, res) => {
     try {
-        const slugToCheck = req.params.slug
-        const user = await User.findOne({ slug: slugToCheck })
+        const user = await User.findById(req.params.id)
         if (!user) {
             return res.status(404).json({ "errMsg": "user not found" })
         }
         //get post by user id
         const post = await Post.find({userId: user._id})
-        res.status(200).json({ post })
+        if(post == null) {
+            return res.status(500).json({ "msg": "This user has no post" })
+        }
+        return res.status(200).json({ post })
     } catch (error) {
         return res.status(500).json({ "errMsg": error })
     }

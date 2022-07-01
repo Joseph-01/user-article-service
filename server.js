@@ -1,9 +1,9 @@
-const { urlencoded } = require("express");
+// const { urlencoded } = require("express");
 const express = require("express");
 const app = express();
 //config file
 const dbConnection = require("./config/config");
-//user route
+//routes
 const userRoute = require("./routes/userRoutes")
 const postRoute = require("./routes/postRoutes")
 
