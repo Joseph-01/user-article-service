@@ -1,6 +1,8 @@
 // const { urlencoded } = require("express");
 const express = require("express");
 const app = express();
+require("dotenv").config()
+const port = process.env.PORT || 3000
 //config file
 const dbConnection = require("./config/config");
 //routes
@@ -15,7 +17,9 @@ app.use("/posts", postRoute)
 
 
 dbConnection.startConnection(
-  app.listen(3000, () => {
-    console.log(`http://localhost:3000`);
-  })
+  app.listen(port//, 
+  //   () => {
+  //   console.log(`http://localhost:3000`);
+  // }
+  )
 );
