@@ -6,6 +6,8 @@ const { findById, find, findOne } = require("../models/user")
 //get all user, only for super admins
 const getAllUser = async (req, res) => {
     try {
+        //Zqb9VANRrl2KuMoC
+        //mongodb+srv://<username>:<password>@atlascluster.7l3s3bx.mongodb.net/?retryWrites=true&w=majority
         const user = await User.find({})
         return res.json({ user })
     } catch (error) {
