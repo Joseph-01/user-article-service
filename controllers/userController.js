@@ -6,8 +6,8 @@ const { findById, find, findOne } = require("../models/user")
 //get all user, only for super admins
 const getAllUser = async (req, res) => {
     try {
-        // const user = await User.find({})
-        res.json({msg: "testing" })
+        const user = await User.find({})
+        return res.json({ user })
     } catch (error) {
         return res.status(500).json({ "errMsg": error })
     }
