@@ -7,7 +7,7 @@ const { findById, find, findOne } = require("../models/user")
 const getAllUser = async (req, res) => {
     try {
         // const user = await User.find({})
-        return res.json({msg: "testing" })
+        res.json({msg: "testing" })
     } catch (error) {
         return res.status(500).json({ "errMsg": error })
     }
