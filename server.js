@@ -16,11 +16,7 @@ app.use("/users", userRoute)
 app.use("/posts", postRoute)
 
 
-app.listen(port)
-// dbConnection.startConnection(
-//   app.listen(port//, 
-//   //   () => {
-//   //   console.log(`http://localhost:3000`);
-//   // }
-//   )
-// );
+// app.listen(port)
+dbConnection.startConnection(
+    app.listen(port)
+);
