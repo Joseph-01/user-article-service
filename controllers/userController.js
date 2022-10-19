@@ -1,6 +1,6 @@
 const User = require("../models/user")
 const Post = require("../models/post")
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcryptjs")
 const { findById, find, findOne } = require("../models/user")
 
 //get all user, only for super admins

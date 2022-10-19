@@ -1,0 +1,10 @@
+node_modules
+
+Procfile
+
+*.md
+
+.gitignore
+
+
+jsconfig.json

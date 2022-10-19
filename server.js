@@ -1,4 +1,4 @@
-// const { urlencoded } = require("express");
+const { urlencoded } = require("express");
 const express = require("express");
 const app = express();
 require("dotenv").config()
@@ -10,7 +10,7 @@ const userRoute = require("./routes/userRoutes")
 const postRoute = require("./routes/postRoutes")
 
 
-// app.use(urlencoded({extended: false}))
+// app.use(urlencoded({extended: true}))
 app.use(express.json())
 app.use("/users", userRoute)
 app.use("/posts", postRoute)
@@ -18,5 +18,5 @@ app.use("/posts", postRoute)
 
 // app.listen(port)
 dbConnection.startConnection(
-    app.listen(port)
+    app.listen(3000)
 );

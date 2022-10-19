@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  node:
+    build: .
+    container_name: api-shugr-blog
+    ports:
+      - '3000:3000'

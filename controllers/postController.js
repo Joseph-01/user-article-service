@@ -2,6 +2,15 @@ const { findById } = require("../models/post")
 const Post = require("../models/post")
 const User = require("../models/user")
 
+const getAllPost = async (req, res) => {
+    try {
+        const post = await Post.find({})
+        return res.json({ post })
+    } catch (error) {
+        return res.status(500).json({ "errMsg": error })
+    }
+}
+
 //create a post
 const createPost = async (req, res) => {
     try {
@@ -87,6 +96,7 @@ const likePost = async (req, res) => {
 
 
 module.exports = {
+    getAllPost,
     createPost,
     getPostById,
     updatePost,

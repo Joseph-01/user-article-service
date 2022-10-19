@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 require("dotenv").config()
 
-// const connectionString = "mongodb://localhost:27017/blogApi_v3";
-const connectionString = process.env.MONGODB_URI
+const connectionString = process.env.MONGODB
 
 const connect = (connectionString) => {
     mongoose
