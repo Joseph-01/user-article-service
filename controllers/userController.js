@@ -3,6 +3,75 @@ const Post = require("../models/post")
 const bcrypt = require("bcryptjs")
 const { findById, find, findOne } = require("../models/user")
 
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - firstname
+ *         - lastname
+ *         - email
+ *         - password
+ *         - username
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The auto-generated id of the post
+ *         firstname:
+ *           type: string
+ *         lastname:
+ *           type: stringe
+ *         profilePic:
+ *           type: string
+ *         username:
+ *           type: string
+ *         password:
+ *           type: string
+ *         phoneNumber:
+ *           type: string
+ *         email:
+ *           type: string
+ *         followers:
+ *           type: array
+ *         followings:
+ *           type: array
+ *         isAdmin:
+ *           type: boolean
+ *         slug:
+ *           type: string
+ *       example:
+ *         firstname: John
+ *         lastname: Doe
+ *         profilePic: 
+ *         username: johndoe
+ *         password: 123456
+ *         phoneNumber: 08012345678
+ *         isAdmin: false
+ *         followers: []
+ *         followings: []
+ *         email: johndoe@gmail.com
+ *         slug:
+ */
+
+/**
+ * @swagger
+ * tags:
+ *  name: Users
+ *  description: The user managing API
+*/
+
 //get all user, only for super admins
 const getAllUser = async (req, res) => {
     try {
