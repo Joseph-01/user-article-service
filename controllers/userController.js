@@ -75,8 +75,6 @@ const { findById, find, findOne } = require("../models/user")
 //get all user, only for super admins
 const getAllUser = async (req, res) => {
     try {
-        //Zqb9VANRrl2KuMoC
-        //mongodb+srv://<username>:<password>@atlascluster.7l3s3bx.mongodb.net/?retryWrites=true&w=majority
         const user = await User.find({})
         return res.json({ user })
     } catch (error) {
@@ -84,7 +82,28 @@ const getAllUser = async (req, res) => {
     }
 }
 
-//create a user
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     summary: Create a new user
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       200:
+ *         description: The user was successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Some server error
+ */
 const createUser = async (req, res) => {
     try {
         //hash password
@@ -112,7 +131,33 @@ const createUser = async (req, res) => {
     }
 }
 
-//get a user by id
+/**
+ * @swagger
+ * /users/{id}:
+ *  get:
+ *   summary: Get the user by id
+ *   tags: [Users]
+ *   security:
+ *     - bearerAuth: []
+ *   parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *         type: string
+ *       required: true
+ *       description: The user id
+ *   responses:
+ *    200:
+ *      description: The user description by id
+ *      contents:
+ *        application/json:
+ *          schema:
+ *            type: array 
+ *            items:
+ *              $ref: '#/components/schemas/User'
+ *    404:
+ *      description: The user was not found
+ */
 const getUserById = async (req, res) => {
     try {
         const user = await User.findOne({ _id: req.params.id })
@@ -121,7 +166,40 @@ const getUserById = async (req, res) => {
         return res.status(500).json({ "errMsg": error })
     }
 }
-//update a user
+
+/**
+ * @swagger
+ * /users/{id}:
+ *  put:
+ *   summary: Update the user by id
+ *   tags: [Users]
+ *   security:
+ *     - bearerAuth: []
+ *   requestBody:
+ *     required: true
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: '#/components/schemas/User'
+ *   parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *         type: string
+ *       required: true
+ *       description: The user id
+ *   responses:
+ *    200:
+ *      description: The user description by id
+ *      contents:
+ *        application/json:
+ *          schema:
+ *            type: array 
+ *            items:
+ *              $ref: '#/components/schemas/Post'
+ *    404:
+ *      description: The user was not found
+ */
 const updateUser = async (req, res) => {
     try {
         const id = req.params.id
@@ -141,6 +219,41 @@ const updateUser = async (req, res) => {
 
 
 //follow and unfollow a user 
+/**
+ * @swagger
+ * /users/{id}/follow:
+ *  put:
+ *    summary: follow a user
+ *    tags: [Users]
+ *    security:
+ *      - bearerAuth: []
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The user id to follow
+ *    requestBody:
+ *      required: true
+ *      content: 
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            required: 
+ *              - userId
+ *            properties:
+ *              userId:
+ *                type: string
+ *            example: 
+ *              userId: 63586f767c5dd57d7e0d3a1c
+ *    responses:
+ *      200:
+ *        description: The userId has succesfully follow or unfollow user id
+ *      403:
+ *        description: You cannot follow yourself
+ *    
+ */
 const followUser = async (req, res) => {
     try {
         if (req.params.id != req.body.userId) {
