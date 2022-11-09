@@ -204,6 +204,32 @@ const updatePost = async (req, res) => {
 
 }
 
+
+/**
+ * @swagger
+ * /posts/{id}:
+ *   delete:
+ *     summary: Delete the post by id
+ *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The post id
+ *     responses:
+ *       200:
+ *         description: The post was deleted
+ *       404:
+ *         description: The post was not found
+ *       500:
+ *         description: Some server error
+ *         
+ */
+
 //delete a post
 const deletePost = async (req, res) => {
     try {
@@ -217,6 +243,43 @@ const deletePost = async (req, res) => {
         return res.status(500).json({ "errMsg": error })
     }
 }
+
+/**
+ * @swagger
+ * /posts/{id}/like:
+ *   patch:
+ *     summary: Like a post
+ *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The post id
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userId
+ *             properties:
+ *               userId:
+ *                 type: string
+ *             example:
+ *               userId: 60e1c7b5b8b5a8a0b4b0b5b5
+ *     responses:
+ *       200:
+ *         description: The post was liked/unliked
+ *       404:
+ *         description: The post was not found
+ *       500:
+ *         description: Some server error
+ */
 
 //like a post
 const likePost = async (req, res) => {

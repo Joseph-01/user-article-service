@@ -279,7 +279,33 @@ const followUser = async (req, res) => {
 
 
 
-
+/**
+ * @swagger
+ * /users/{id}/posts:
+ *   get:
+ *     summary: Get all posts of a user
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user id
+ *     responses:
+ *       200:
+ *         description: Posts of a user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Post'
+ *       404:
+ *         description: This user has not posted anything yet
+ */
 //get post by a particular user
 const getPostByUser = async (req, res) => {
     try {
@@ -299,6 +325,32 @@ const getPostByUser = async (req, res) => {
 }
 
 //password update
+
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: Delete the user by id
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user id
+ *     responses:
+ *       200:
+ *         description: The user was deleted
+ *       404:
+ *         description: The user was not found
+ *       500:
+ *         description: Some server error
+ *         
+ */
 //delete a user
 const deleteUser = async (req, res) => {
     try {
